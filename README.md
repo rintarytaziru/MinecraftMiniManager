@@ -6,7 +6,6 @@ Quản lý nhanh các **addons Minecraft Bedrock Server** với các tính năng
 - Điều chỉnh thứ tự addon
 - Xem thông tin gói tài nguyên
 
----
 <br/><br/>
 
 
@@ -36,16 +35,17 @@ Quản lý nhanh các **addons Minecraft Bedrock Server** với các tính năng
    - Hoặc theo đường dẫn tùy chỉnh của bạn
 
 > ⚠️ Lưu ý: Giao diện hoạt động tốt nhất trên **máy tính**. Trên thiết bị di động có thể gặp khó khăn.
----
+
 <br/><br/>
 ## 🔹 Phiên bản hiện tại
 **Index:** 1.0.0 (beta)
 
 
----
+
 <br/><br/>
 
 ## 🔹 Tài nguyên
 - Biểu tượng: [Flaticon Interface](https://www.flaticon.com/free-icon-font/), [Google Material Icon](https://fonts.google.com/icons)  
 - Thông báo: [Notyf](https://www.jsdelivr.com/package/npm/notyf)  
 - Giao diện: [TailwindCSS](https://tailwindcss.com)
+
