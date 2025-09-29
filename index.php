@@ -1,4 +1,4 @@
-<?php include "./constant.php" ?>
+<?php include "./src/constant.php" ?>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -9,34 +9,33 @@
   <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/3.0.0/uicons-bold-rounded/css/uicons-bold-rounded.css">
   <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-brands/css/uicons-brands.css'>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=close,warning" />
-  <style>::selection {
-    background: #2e7520;
+  <style> ::selection {
+    background: #2e7520; /* Màu khi bôi đen */
     color: #fff;
   }
   body {
     background: url(<?= $config["image_background"] ?>);
     background-attachment: fixed;
     background-size: cover;
-  }
-  </style>
+  } </style>
 </head>
 <body class="min-h-screen">
-  <!-- Layout 2 cột -->
+  <!-- Bố cục 2 cột -->
   <div class="grid grid-cols-2 gap-1 mb-4 m-4">
-    <!-- Resource Packs -->
+    <!-- Resource Packs - Gói tài nguyên -->
     <div class="overflow-y-scroll bg-white/40 max-h-[400px] h-full rounded-md p-1 min-h-[280px]">
       <h2 class="text-xl font-semibold mb-3 p-2">Resource Packs</h2>
       <div id="resource_packs" class="space-y-2"></div>
     </div>
 
-    <!-- Behavior Packs -->
+    <!-- Behavior Packs - Gói hành vi -->
     <div class="overflow-y-scroll bg-white/40 max-h-[400px] h-full rounded-md p-1 min-h-[280px]">
       <h2 class="text-xl font-semibold mb-3 p-2">Behavior Packs</h2>
       <div id="behavior_packs" class="space-y-2"></div>
     </div>
   </div>
 
-  <!-- Added -->
+  <!-- Added - Các gói đã thêm -->
   <div class="grid grid-cols-2 gap-1 m-4">
     <div class="border p-2 bg-white/30 overflow-y-scroll max-h-[400px] h-full rounded-md min-h-[280px]">
       <h3 class="text-lg font-medium mb-2">Resource</h3>
@@ -51,12 +50,12 @@
 <footer class="w-full bg-gray-900 text-white py-4">
   <div class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-3 text-sm px-4">
     
-    <!-- Bản quyền -->
+    <!-- Thông tin chủ sở hữu -->
     <div class="text-center md:text-left">
       Minecraft Mini Addons Manager © 2025 RintaryTaziru. All rights reserved.
     </div>
 
-    <!-- Links GitHub -->
+    <!-- Offical Linls -->
     <div class="flex flex-col md:flex-row items-center gap-2 md:gap-4 text-center">
       <a href="https://github.com/RintaryTaziru" target="_blank" class="flex items-center gap-1 text-blue-400 hover:underline">
         <i class="fi fi-brands-github"></i> Profile
@@ -70,7 +69,7 @@
 </footer>
 
 
-
+  <!-- Thư viện JS được sử dụng -->
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 
@@ -96,11 +95,11 @@
     };
 
     const mcFormats = {
-      'l': 'font-weight:bold;', // Bold
-      'o': 'font-style:italic;', // Italic
-      'n': 'text-decoration:underline;', // Underline
-      'm': 'text-decoration:line-through;', // Strikethrough
-      'r': 'reset' // Reset
+      'l': 'font-weight:bold;', // Bold / In đậm
+      'o': 'font-style:italic;', // Italic / In nghiêng
+      'n': 'text-decoration:underline;', // Underline / Gạch chân
+      'm': 'text-decoration:line-through;', // Strikethrough / Gạch ngang
+      'r': 'reset' // Reset / Đặt lại hiệu ứng
     };
 
     const notyf = new Notyf({
@@ -140,7 +139,7 @@
       for (let i = 0; i < text.length; i++) {
         if (text[i] === "§" && i + 1 < text.length) {
           let code = text[i + 1].toLowerCase();
-          i++; // skip code
+          i++;
 
           if (mcColors[code]) {
             // đóng tag trước đó
@@ -179,6 +178,11 @@
     }
 
     function enableSorting(listId, type) {
+      /* Nguyên lý hoạt động:
+        - Sử dụng thư viện SortableJS để kéo thả sắp xếp
+        - Khi kết thúc kéo thả sẽ dựa vào index cũ và mới để thay đổi vị trí
+        - request được sử dụng ở  ./src/package_change.php
+      */
       new Sortable(document.getElementById(listId), {
         handle: ".drag-handle", // chỉ kéo bằng icon
         animation: 150,
@@ -188,7 +192,7 @@
 
           // Gửi request đổi vị trí
           let xhttp = new XMLHttpRequest();
-          xhttp.open("GET", `./package_change.php?type=${type}&current=${current}&newChange=${newChange}`, true);
+          xhttp.open("GET", `./src/package_change.php?type=${type}&current=${current}&newChange=${newChange}`, true);
           xhttp.send();
         }
       });
@@ -262,7 +266,7 @@
             </div>
           `;
 
-          // Hiển thị thông tin trong modal
+          // Hiển thị thông tin chi tiết trong bản thông tin gói
           let modal = document.createElement("div");
           modal.className = "fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50";
           modal.innerHTML = `
@@ -272,24 +276,27 @@
             </div>
           `;
 
-          modal.style.opacity = 0; // bắt đầu với opacity 0
+          // làm mượt bằng opacity khi mở
+          var modalDelay = 100; // thời gian chờ trước khi bắt đầu hiệu ứng
+
+          modal.style.opacity = 0;
           modal.style.transition = "opacity 0.2s ease";
           document.body.appendChild(modal);
           setTimeout(() => {
-            modal.style.opacity = 1; // sau 100ms thì hiện ra
-          }, 100);
+            modal.style.opacity = 1;
+          }, modalDelay);
 
-          // Gắn sự kiện đóng modal
+          // làm mượt bằng opacity khi đóng
           modal.querySelector("#closeModalBtn").addEventListener("click", () => {
             modal.style.transition = "opacity 0.2s ease";
             modal.style.opacity = 0;
-            setTimeout(() => modal.remove(), 100);
+            setTimeout(() => modal.remove(), modalDelay);
           });
         }
       };
 
-      // Gọi PHP bằng uuid
-      xhttp.open("GET", `./package_info.php?uid=${encodeURIComponent(pack.uuid)}`, true);
+      // Lấy thông tin chi tiết gói
+      xhttp.open("GET", `./src/package_info.php?uid=${encodeURIComponent(pack.uuid)}`, true);
       xhttp.send();
     }
 
@@ -302,13 +309,14 @@
           renderList(data.behavior, "behavior_packs", true);
         }
       };
-      xhttp.open("GET", "./package_all_list.php", true);
+      xhttp.open("GET", "./src/package_all_list.php", true);
       xhttp.send();
     }
 
     function renderList(packs, targetId, isAll) {
       let container = document.getElementById(targetId);
-      container.innerHTML = ""; // clear trước
+      container.innerHTML = "";
+      // Làm trống danh sách trước khi thêm mới
 
       packs.forEach(p => {
         let icon = p.icon
@@ -318,7 +326,7 @@
           ? `(ID: ${p.uuid}) v${p.version.join(".")}`
           : `v${p.version.join(".")}`;
 
-        // handle kéo
+        // biểu tượng handle có thể kéo
         let handle = isAll ? "" : `<span class="drag-handle cursor-move mr-2">⋮⋮</span>`;
 
         let div = document.createElement("div");
@@ -340,7 +348,7 @@
 
         container.appendChild(div);
 
-        // gắn event listener
+        // lắn nghe sự kiện khi thêm/gỡ
         let btn = div.querySelector("#pack_button");
         if (isAll) {
           btn.addEventListener("click", () => addPack(encodeURIComponent(JSON.stringify(p))));
@@ -367,7 +375,7 @@
           renderList(data.behavior, "added_behavior", false);
         }
       };
-      xhttp.open("GET", "./package_added_list.php", true);
+      xhttp.open("GET", "./src/package_added_list.php", true);
       xhttp.send();
     }
 
@@ -388,7 +396,7 @@
           }
         }
       };
-      xhttp.open("GET", "./package_add.php?data=" + data, true);
+      xhttp.open("GET", "./src/package_add.php?data=" + data, true);
       xhttp.send();
     }
 
@@ -406,12 +414,16 @@
           notyf.error("Lỗi khi gỡ bỏ gói: " + this.responseText);
         }
       };
-      xhttp.open("GET", "./package_remove.php?data=" + data, true);
+      xhttp.open("GET", "./src/package_remove.php?data=" + data, true);
       xhttp.send();
     }
 
     loadAll();
     loadAdded();
+
+    /*
+      -- Hết --
+    */
   </script>
 </body>
 </html>
